@@ -1,26 +1,3 @@
-"""
-pixpick
--------
-Interactive coordinate picker for Computer Vision frameworks.
-
-Quick start
------------
-    import pixpick
-
-    region = pixpick.box("frame.jpg")
-
-    # use immediately with any framework
-    model.predict("frame.jpg", **region.to_yolo())
-
-    # or inspect the raw coords
-    print(region.xyxy)        # [x1, y1, x2, y2]
-    print(region.normalized)  # [0.12, 0.08, 0.64, 0.48]
-
-    # save and reload
-    region.save("zone.json")
-    region = pixpick.load("zone.json")
-"""
-
 from pixpick.selectors.box import BoxSelector, SelectionCancelled
 from pixpick.core.selection import Box
 from pixpick.utils import ImageSource

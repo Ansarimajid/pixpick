@@ -20,7 +20,7 @@ class BoxSelector:
         Pass a backend instance to override auto-detection.
         None → CV2Backend (the only backend implemented in v0.1).
     """
-
+    
     def __init__(self, backend: BaseBackend | None = None):
         self.backend = backend or CV2Backend()
 
@@ -45,6 +45,7 @@ class BoxSelector:
         SelectionCancelled
             If the user pressed Esc or closed the window.
         """
+        print(f"Opening interactive selection window for: {source}")
         image = load_image(source)
         w, h  = image_size(image)
 

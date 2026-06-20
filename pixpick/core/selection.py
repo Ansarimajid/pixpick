@@ -4,7 +4,7 @@ import numpy as np
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING
-
+import cv2  # noqa: E402  (needed inside visualize — placed here to avoid circular)
 if TYPE_CHECKING:
     from pixpick.adapters.base import BaseAdapter
 
@@ -170,6 +170,3 @@ class Box:
             f"size={self.image_width}x{self.image_height}, "
             f"area={self.area}px²)"
         )
-
-
-import cv2  # noqa: E402  (needed inside visualize — placed here to avoid circular)
