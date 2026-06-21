@@ -24,7 +24,9 @@ class BoxSelector:
     def __init__(self, backend: BaseBackend | None = None):
         self.backend = backend or CV2Backend()
 
-    def select(self, source: ImageSource, title: str = "pixpick") -> Box:
+
+    def select(self, source: ImageSource, 
+               title: str = "pixpick | drag to select | Enter=confirm | Backspace=clear | Esc=cancel") -> Box:
         """
         Open an interactive window on `source` and return a Box.
 
