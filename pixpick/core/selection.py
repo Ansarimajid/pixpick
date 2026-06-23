@@ -122,17 +122,17 @@ class Box:
             (self.x1, self.y2)
         ]
 
-    def yoloe(self):
+    def yoloe(self) -> np.ndarray:
         """[(point1), (point2), (point3), (point4)] """
         return np.array([
             [self.x1, self.y1, self.x2, self.y2]
         ])
 
-    def sam(self):
+    def sam(self) -> np.ndarray:
         """[(point1), (point2), (point3), (point4)] """
         return np.array([self.x1, self.y1, self.x2, self.y2])
 
-    def to_raw(self) -> dict:
+    def raw(self) -> dict:
         """All formats at once — handy for debugging."""
         return {
             "xyxy":            self.xyxy,
@@ -246,7 +246,7 @@ class Polygon:
         return np.array(self.points, dtype=np.int32)
 
     @property
-    def normalized(self) -> list[tuple[float, float]]:
+    def norm(self) -> list[tuple[float, float]]:
         """Points normalised to [0, 1]."""
         return [
             (x / self.image_width, y / self.image_height)
@@ -254,12 +254,12 @@ class Polygon:
         ]
 
     @property
-    def normalized_numpy(self) -> np.ndarray:
+    def norm_numpy(self) -> np.ndarray:
         """Shape (N, 2) float32 array of normalised points."""
         return np.array(self.normalized, dtype=np.float32)
 
     @property
-    def bounding_box(self) -> Box:
+    def bbox(self) -> Box:
         """Tight axis-aligned Box that encloses this polygon."""
         xs = [p[0] for p in self.points]
         ys = [p[1] for p in self.points]
@@ -268,14 +268,14 @@ class Polygon:
         return xyxy
 
     @property
-    def n_points(self) -> int:
+    def npoints(self) -> int:
         return len(self.points)
 
     # ------------------------------------------------------------------ #
     # Adapter shortcuts                                                    #
     # ------------------------------------------------------------------ #
 
-    def to_supervision(self) -> dict:
+    def supervision(self) -> dict:
         """
         Ready to unpack into sv.PolygonZone().
 
@@ -285,7 +285,7 @@ class Polygon:
         """
         return {"polygon": self.as_numpy}
 
-    def to_raw(self) -> dict:
+    def raw(self) -> dict:
         """All formats at once."""
         return {
             "points":            self.points,
