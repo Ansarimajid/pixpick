@@ -122,7 +122,7 @@ class Box:
             (self.x1, self.y2)
         ]
 
-    def yoloe(self) -> np.ndarray:
+    def yolo_prompt(self) -> np.ndarray:
         """[(point1), (point2), (point3), (point4)] """
         return np.array([
             [self.x1, self.y1, self.x2, self.y2]
