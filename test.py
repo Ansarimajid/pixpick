@@ -67,10 +67,10 @@ print("\n=== NORMALIZED ===")
 print(region.normalized)
 
 print("\n=== BOUNDING BOX ===")
-print(region.bounding_box)
+print(region.bbox)
 
 print("\n=== NUMBER OF POINTS ===")
-print(region.n_points)
+print(region.npoints)
 
 print("\n=== SUPERVISION ===")
 print(region.to_supervision())

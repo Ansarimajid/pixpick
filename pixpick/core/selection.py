@@ -79,7 +79,7 @@ class Box:
         return [self.x1 + w / 2, self.y1 + h / 2, float(w), float(h)]
 
     @property
-    def normalized(self) -> list[float]:
+    def norm(self) -> list[float]:
         """[x1, y1, x2, y2] — values in [0, 1]."""
         return [
             self.x1 / self.image_width,
@@ -89,9 +89,9 @@ class Box:
         ]
 
     @property
-    def normalized_xywh(self) -> list[float]:
+    def norm_xywh(self) -> list[float]:
         """[x, y, w, h] normalised — YOLO label format."""
-        x1n, y1n, x2n, y2n = self.normalized
+        x1n, y1n, x2n, y2n = self.norm
         return [x1n, y1n, x2n - x1n, y2n - y1n]
 
     @property
@@ -138,8 +138,8 @@ class Box:
             "xyxy":            self.xyxy,
             "xywh":            self.xywh,
             "cxcywh":          self.cxcywh,
-            "normalized":      self.normalized,
-            "normalized_xywh": self.normalized_xywh,
+            "normalized":      self.norm,
+            "normalized_xywh": self.norm_xywh,
             "numpy":           self.as_numpy.tolist(),
         }
 
@@ -155,7 +155,7 @@ class Box:
             "coordinates": {
                 "xyxy":       self.xyxy,
                 "xywh":       self.xywh,
-                "normalized": self.normalized,
+                "normalized": self.norm,
             },
         }
         Path(path).write_text(json.dumps(data, indent=2))
@@ -256,7 +256,7 @@ class Polygon:
     @property
     def norm_numpy(self) -> np.ndarray:
         """Shape (N, 2) float32 array of normalised points."""
-        return np.array(self.normalized, dtype=np.float32)
+        return np.array(self.norm, dtype=np.float32)
 
     @property
     def bbox(self) -> Box:
@@ -290,9 +290,9 @@ class Polygon:
         return {
             "points":            self.points,
             "numpy":             self.as_numpy.tolist(),
-            "normalized":        self.normalized,
-            "normalized_numpy":  self.normalized_numpy.tolist(),
-            "bounding_box_xyxy": self.bounding_box,
+            "normalized":        self.norm,
+            "normalized_numpy":  self.norm_numpy.tolist(),
+            "bbox_xyxy":         self.bbox,
         }
 
     # ------------------------------------------------------------------ #
@@ -306,7 +306,7 @@ class Polygon:
             "image_size": [self.image_width, self.image_height],
             "coordinates": {
                 "points":     self.points,
-                "normalized": self.normalized,
+                "normalized": self.norm,
             },
         }
         Path(path).write_text(json.dumps(data, indent=2))
@@ -357,6 +357,6 @@ class Polygon:
 
     def __repr__(self) -> str:
         return (
-            f"Polygon(n_points={self.n_points}, "
+            f"Polygon(npoints={self.npoints}, "
             f"size={self.image_width}x{self.image_height})"
         )

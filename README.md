@@ -17,7 +17,7 @@
 Every major CV framework needs coordinates before it can run.
 
 ```python
-model.predict("frame.jpg", crop=[120, 80, 640, 480])        # YOLO   — where does this come from?
+regioncounter = RegionCounter(region=[120, 80, 640, 480])    # YOLO   — where does this region come from?
 predictor.predict(box=np.array([120, 80, 640, 480]))         # SAM2   — same problem
 ```
 
@@ -33,14 +33,16 @@ zone   = pixpick.polygon("frame.jpg")  # click polygon vertices
 
 # coordinates are ready — unpack directly into any framework
 # YOLO:
-regioncounter = solutions.RegionCounter(
+regioncounter = RegionCounter(
      region=region.yolo_region,  # pass region points
      model="yolo26n.pt",
  )
+
+# same for YOLOE
 model.predict("frame.jpg", visual_prompt= region.yolo_prompt())
 
 # SAM1/SAM2:
-predictor.predict(region.sam())
+predictor.predict(box=region.sam())
 ```
 
 A window opens on your image. You interact. You get framework-ready coordinates back in Python. No round-trips.
@@ -76,9 +78,9 @@ Every selection object carries all the formats you'll ever need.
 # ── Box ──────────────────────────────────────────────────────
 region = pixpick.box("frame.jpg")
 
-region.xyxy              # [x1, y1, x2, y2]           absolute pixels
+region.xyxy              # [x1, y1, x2, y2]            absolute pixels
 region.xywh              # [x, y, w, h]                absolute pixels
-region.normalized_xywh   # [x, y, w, h]                0.0 – 1.0  ← YOLO label format
+region.norm_xywh         # [x, y, w, h]                0.0 – 1.0  ← YOLO label format
 region.center            # (cx, cy)
 region.area              # pixels²
 
@@ -88,9 +90,9 @@ zone = pixpick.polygon("frame.jpg")
 
 zone.points              # [(x0,y0), (x1,y1), ...]     absolute pixels
 zone.as_numpy            # np.array shape (N, 2)
-zone.normalized          # [(x0n,y0n), ...]             0.0 – 1.0
-zone.bounding_box        # → Box   tight bbox around the polygon
-zone.n_points            # int
+zone.norm                # [(x0n,y0n), ...]             0.0 – 1.0
+zone.bbox                # → Box   tight bbox around the polygon
+zone.npoints             # int
 ```
 For more details, see [Selectors](docs/selectors.md).
 ---
@@ -135,8 +137,7 @@ zone.save(ZONE)
 |---|---|
 | 🚀 [Getting Started](docs/getting-started.md) | Installation, first selection, controls |
 | 🎯 [Selectors](docs/selectors.md) | All properties and methods for Box and Polygon |
-| 🔌 [Framework Integration](docs/frameworks.md) | YOLO, SAM2, Supervision, OCR and more |
-| 🖥️ [Backends](docs/backends.md) | CV2, Notebook, Gradio — and writing your own |
+| 🔌 [Framework Integration](docs/frameworks.md) | YOLO, SAM2 and more |
 | 💾 [Persistence](docs/persistence.md) | Save, load, JSON schema |
 | 🏗️ [Architecture](docs/architecture.md) | How it's built and how to extend it |
 | 🗺️ [Roadmap](docs/roadmap.md) | What's coming next |

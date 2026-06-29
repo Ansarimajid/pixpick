@@ -14,8 +14,8 @@ region = pixpick.box("image.jpg")
 region.xyxy             # [x1, y1, x2, y2]          absolute pixels
 region.xywh             # [x, y, w, h]               absolute pixels
 region.cxcywh           # [cx, cy, w, h]             absolute pixels
-region.normalized       # [x1, y1, x2, y2]           0.0 – 1.0
-region.normalized_xywh  # [x, y, w, h]               0.0 – 1.0  (YOLO label format)
+region.norm             # [x1, y1, x2, y2]           0.0 – 1.0
+region.norm_xywh        # [x, y, w, h]               0.0 – 1.0  (YOLO label format)
 region.center           # (cx, cy)                   absolute pixels
 region.area             # int                         pixels²
 region.as_numpy         # np.array shape (4,)        int32
@@ -26,10 +26,10 @@ region.image_height     # int
 ### Framework methods
 
 ```python
-region.to_yolo()        # {"crop": [x1, y1, x2, y2]}
-region.to_yolo_label(class_id=0)  # {"line": "0 cx cy w h", ...}
-region.to_sam2()        # {"box": np.array([x1, y1, x2, y2])}
-region.to_raw()         # all formats in one dict
+region.yolo_region()
+region.yolo_prompt()
+region.sam()
+region.raw()         # all formats in one dict
 ```
 
 ### Visualise
@@ -62,19 +62,18 @@ Minimum 3 points required before `Enter` confirms. Vertices are recorded in the 
 ```python
 zone.points             # [(x0,y0), (x1,y1), ...]   list of tuples, absolute pixels
 zone.as_numpy           # np.array shape (N, 2)      int32
-zone.normalized         # [(x0n,y0n), ...]           0.0 – 1.0
-zone.normalized_numpy   # np.array shape (N, 2)      float32
-zone.n_points           # int
-zone.bounding_box       # Box  — tight axis-aligned bbox around the polygon
+zone.norm               # [(x0n,y0n), ...]           0.0 – 1.0
+zone.norm_numpy         # np.array shape (N, 2)      float32
+zone.npoints           # int
+zone.bbox       # Box  — tight axis-aligned bbox around the polygon
 zone.image_width        # int
 zone.image_height       # int
 ```
 
 ### Framework methods
 
-```python
-zone.to_supervision()   # {"polygon": np.array shape (N, 2)}
-zone.to_raw()           # all formats in one dict
+zone.yolo_region()
+zone.raw()           # all formats in one dict
 ```
 
 ### Visualise

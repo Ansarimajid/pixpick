@@ -9,9 +9,9 @@ Quick start
 
     # Box
     region = pixpick.box("frame.jpg")
-    model.predict("frame.jpg", **region.to_yolo())
+    model.predict("frame.jpg", **region.yolo_region())
     print(region.xyxy)          # [x1, y1, x2, y2]
-    print(region.normalized)    # [0.12, 0.08, 0.64, 0.48]
+    print(region.norm)    # [0.12, 0.08, 0.64, 0.48]
 
     # Polygon
     zone = pixpick.polygon("frame.jpg")

@@ -27,16 +27,13 @@ BoxSelector.select(source)
     ├── CV2Backend.select_box(image) → (x1, y1, x2, y2)
     └── Box(x1, y1, x2, y2, w, h)   → returned to caller
                 │
-                ├── .xyxy / .xywh / .normalized / ...   (properties)
-                ├── .to_yolo()                           (inline, no extra file)
-                ├── .to_sam2()                           (inline, no extra file)
+                ├── .xyxy / .xywh / .norm / ...   (properties)
+                ├── .yolo_region()                           (inline, no extra file)
+                ├── .sam()                           (inline, no extra file)
                 └── .save() / .load()                   (persistence)
 ```
 
 ## Design decisions
-
-**Selection objects own all conversion logic.**
-There is no separate adapters layer. Every `to_*()` method lives directly on `Box` or `Polygon`. The conversion is always a few lines — no reason to put it in a separate class and file.
 
 **Backends are the only abstraction.**
 `BaseBackend` is the one interface worth keeping because adding a new environment (Jupyter, Gradio) means writing a new backend with zero changes to selectors or selection objects. Everything else is concrete.
@@ -47,23 +44,80 @@ A selector does three things: load the image, call the backend, wrap the result.
 **`pixpick.load()` dispatches on the JSON `"type"` field.**
 You save a `Box` or `Polygon` and load it back with the same call. The dispatcher reads `"type"` and returns the right object.
 
-## Adding a new selector type (e.g. Line)
 
-1. Add `Line` dataclass to `core/selection.py` with properties and `to_*()` methods.
-2. Add `select_line()` to `BaseBackend` and implement it in `CV2Backend`.
-3. Create `selectors/line.py` with `LineSelector` — mirrors `BoxSelector` exactly.
-4. Add `pixpick.line()` to `__init__.py`.
 
-No other files change.
 
-## Adding a new framework method
 
-Add a method directly to the relevant class in `core/selection.py`.
+# Backends
+
+A backend handles the UI — opening a window, capturing mouse input, and returning raw pixel coordinates. Backends know nothing about Selection objects or frameworks; that is the selector's job.
+
+## Available backends
+
+| Backend | Class | Environment | Status |
+|---|---|---|---|
+| OpenCV window | `CV2Backend` | Local scripts | ✅ v0.1 |
+| Matplotlib | `NotebookBackend` | Jupyter / Colab | 🔜 v0.2 |
+| Gradio | `GradioBackend` | Headless / SSH | 🔜 v0.2 |
+
+## CV2Backend (default)
+
+Used automatically when no backend is specified. Opens a native OpenCV window.
+
+**Requirements:** a display must be available (`DISPLAY` set on Linux, native on Windows/macOS).
 
 ```python
-# in Box
-def to_detectron2(self) -> dict:
-    return {"bbox": self.xyxy, "bbox_mode": BoxMode.XYXY_ABS}
+region = pixpick.box("frame.jpg")               # CV2Backend used by default
 ```
 
-That's it.
+## Swapping backends
+
+Pass a backend instance to any selector.
+
+```python
+from pixpick.backends.cv2_backend import CV2Backend
+from pixpick.selectors.box import BoxSelector
+
+selector = BoxSelector(backend=CV2Backend())
+region   = selector.select("frame.jpg")
+```
+
+Once `NotebookBackend` and `GradioBackend` land in v0.2, swapping is the same:
+
+```python
+from pixpick.backends.notebook import NotebookBackend
+
+region = BoxSelector(backend=NotebookBackend()).select("frame.jpg")
+```
+
+## Writing a custom backend
+
+Subclass `BaseBackend` and implement both methods. The return types are strict — selectors rely on them.
+
+```python
+from pixpick.backends.base import BaseBackend
+import numpy as np
+
+
+class MyBackend(BaseBackend):
+
+    def select_box(
+        self,
+        image: np.ndarray,
+        title: str = "pixpick",
+    ) -> tuple[int, int, int, int] | None:
+        # open your UI, capture drag
+        # return (x1, y1, x2, y2) or None if cancelled
+        ...
+
+    def select_polygon(
+        self,
+        image: np.ndarray,
+        title: str = "pixpick",
+    ) -> list[tuple[int, int]] | None:
+        # open your UI, capture clicks
+        # return [(x0,y0), (x1,y1), ...] or None if cancelled
+        ...
+```
+
+Both methods must return `None` on cancellation — selectors convert that into a `SelectionCancelled` exception.
