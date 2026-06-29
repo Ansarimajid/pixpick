@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pixpick"
+version = "0.1.0"
+description = "Interactive coordinate picker for Computer Vision frameworks"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["computer-vision", "yolo", "sam2", "supervision", "roi", "annotation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+dependencies = [
+    "opencv-python>=4.5",
+    "numpy>=1.21",
+]
+
+[project.urls]
+Homepage = "https://github.com/K-saif/pixpick"
+Documentation = "https://github.com/K-saif/pixpick/tree/main/docs"
+"Bug Tracker" = "https://github.com/K-saif/pixpick/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pixpick*"]
