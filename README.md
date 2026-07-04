@@ -96,6 +96,7 @@ zone.bbox                # → Box   tight bbox around the polygon
 zone.npoints             # int
 ```
 For more details, see [Selectors](docs/selectors.md).
+
 ---
 
 ## Framework integration
@@ -148,4 +149,4 @@ zone.save(ZONE)
 
 ## Contributing
 
-We welcome contributions! Please open a GitHub issue or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
+We welcome contributions! Please open a GitHub issue or submit a pull request. For more information, see [CONTRIBUTING.md](https://github.com/K-saif/pixpick/blob/main/CONTRIBUTING.md).
