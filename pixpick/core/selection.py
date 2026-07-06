@@ -412,6 +412,9 @@ class Polygon:
     # ------------------------------------------------------------------ #
     # Adapter shortcuts                                                    #
     # ------------------------------------------------------------------ #
+    def yolo_region(self) -> list[tuple[int, int]]:
+        """[(point1), (point2), (point3), ...]"""
+        return self.points
 
     def supervision(self) -> dict:
         """
