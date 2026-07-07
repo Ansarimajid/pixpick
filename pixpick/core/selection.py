@@ -334,6 +334,60 @@ class Multibox:
             "numpy":           self.as_numpy.tolist(),
         }
 
+    # ------------------------------------------------------------------ #
+    # Persistence                                                          #
+    # ------------------------------------------------------------------ #
+
+    def save(self, path: str | Path) -> None:
+        """Serialise to JSON."""
+        data = {
+            "type": "multibox",
+            "image_size": [self.image_width, self.image_height],
+            "coordinates": {
+                "boxes":      self.boxes,
+                "normalized": self.norm,
+            },
+        }
+        Path(path).write_text(json.dumps(data, indent=2))
+
+    @classmethod
+    def load(cls, path: str | Path) -> "Multibox":
+        """Reconstruct from a saved JSON file."""
+        data = json.loads(Path(path).read_text())
+        if data["type"] != "multibox":
+            raise ValueError(f"Expected type 'multibox', got '{data['type']}'")
+        w, h = data["image_size"]
+        boxes = [list(box) for box in data["coordinates"]["boxes"]]
+        return cls(boxes=boxes, image_width=w, image_height=h)
+
+    # ------------------------------------------------------------------ #
+    # Visualisation                                                        #
+    # ------------------------------------------------------------------ #
+
+    def visualize(
+        self,
+        image: np.ndarray,
+        color: tuple = (0, 255, 0),
+        thickness: int = 2,
+    ) -> np.ndarray:
+        """Draw all boxes on a copy of image and return it."""
+        canvas = image.copy()
+        for i, box in enumerate(self.boxes):
+            x1, y1, x2, y2 = box
+            cv2.rectangle(canvas, (x1, y1), (x2, y2), color, thickness)
+            label = f"{i}: ({x1},{y1}) -> ({x2},{y2})"
+            cv2.putText(
+                canvas, label, (x1, max(y1 - 8, 12)),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA,
+            )
+        return canvas
+
+    def __repr__(self) -> str:
+        return (
+            f"Multibox(nboxes={len(self.boxes)}, "
+            f"size={self.image_width}x{self.image_height})"
+        )
+
 
 
 # ======================================================================== #
