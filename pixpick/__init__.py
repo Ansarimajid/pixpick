@@ -25,7 +25,7 @@ Quick start
 from __future__ import annotations
 from pixpick.selectors.box import BoxSelector
 from pixpick.selectors.polygon import PolygonSelector, SelectionCancelled
-from pixpick.core.selection import Box, Polygon, Line
+from pixpick.core.selection import Box, Multibox, Polygon, Line
 from pixpick.utils import ImageSource
 
 
@@ -99,7 +99,7 @@ def line(source: ImageSource, title: str = "pixpick") -> Line:
     from pixpick.selectors.line import LineSelector
     return LineSelector().select(source, title=title)
 
-def load(path: str) -> Box | Polygon | Line:
+def load(path: str) -> Box | Multibox | Polygon | Line:
     """
     Load a previously saved selection from a JSON file.
     Dispatches to Box.load or Polygon.load based on the 'type' field.
@@ -110,6 +110,8 @@ def load(path: str) -> Box | Polygon | Line:
     sel_type = data.get("type")
     if sel_type == "box":
         return Box.load(path)
+    elif sel_type == "multibox":
+        return Multibox.load(path)
     elif sel_type == "polygon":
         return Polygon.load(path)
     else:

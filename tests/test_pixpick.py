@@ -214,6 +214,68 @@ class TestMultibox:
 
 
 # ======================================================================== #
+# Multibox — persistence                                                   #
+# ======================================================================== #
+
+class TestMultiboxPersistence:
+
+    def test_round_trip(self):
+        multibox = Multibox(
+            boxes=[
+                [100, 50, 400, 300],
+                [500, 200, 800, 600],
+            ],
+            image_width=1920,
+            image_height=1080,
+        )
+
+        with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as f:
+            path = f.name
+        try:
+            multibox.save(path)
+            reloaded = Multibox.load(path)
+            assert reloaded.xyxy == multibox.xyxy
+            assert reloaded.image_width == multibox.image_width
+            assert reloaded.image_height == multibox.image_height
+        finally:
+            os.unlink(path)
+
+
+# ======================================================================== #
+# Multibox — visualize                                                     #
+# ======================================================================== #
+
+class TestMultiboxVisualize:
+
+    def test_returns_same_shape(self, sample_image):
+        multibox = Multibox(
+            boxes=[
+                [100, 50, 400, 300],
+                [500, 200, 800, 600],
+            ],
+            image_width=1920,
+            image_height=1080,
+        )
+
+        vis = multibox.visualize(sample_image)
+        assert vis.shape == sample_image.shape
+
+    def test_does_not_mutate_original(self, sample_image):
+        multibox = Multibox(
+            boxes=[
+                [100, 50, 400, 300],
+                [500, 200, 800, 600],
+            ],
+            image_width=1920,
+            image_height=1080,
+        )
+
+        original = sample_image.copy()
+        multibox.visualize(sample_image)
+        np.testing.assert_array_equal(sample_image, original)
+
+
+# ======================================================================== #
 # Box — persistence                                                         #
 # ======================================================================== #
 
