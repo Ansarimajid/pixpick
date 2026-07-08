@@ -11,8 +11,9 @@
 
 </div>
 
----
+![Project Overview](/docs/pixpick_main.png)
 
+---
 ## The problem
 
 Every major CV framework needs coordinates before it can run.
