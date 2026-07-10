@@ -61,6 +61,19 @@ zone   = Polygon.load("count_zone.json")
 }
 ```
 
+**Line**
+
+```json
+{
+  "type": "line",
+  "image_size": [1920, 1080],
+  "coordinates": {
+    " endpoints": [[100, 50], [400, 300]],
+    "normalized": [[0.052, 0.046], [0.208, 0.278]]
+  }
+}
+```
+
 ## Typical production pattern
 
 Pick once interactively, save, then load on every subsequent run.
