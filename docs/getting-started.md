@@ -43,6 +43,16 @@ If you draw more than one box, `pixpick.box()` returns a `Multibox` that holds a
 | Confirm (≥ 3 points) | `Enter` |
 | Cancel | `Esc` |
 
+**Line selector**
+
+| Action | Control |
+|---|---|
+| Add endpoint | Left-click |
+| Undo last endpoint | Right-click |
+| Clear all | `Z` |
+| Confirm | `Enter` |
+| Cancel | `Esc` |
+
 ## Passing an array, image, or video frame
 
 `pixpick` accepts a file path, a numpy BGR array, or a video file with an explicit frame number.

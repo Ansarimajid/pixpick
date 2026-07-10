@@ -113,6 +113,5 @@ zone = pixpick.load("zone.json")   # or Polygon.load("zone.json")
 | Selector | Interaction | Returns | Release |
 |---|---|---|---|
 | `pixpick.points()` | click (fg/bg toggle) | `Points` | v0.2 |
-| `pixpick.line()` | 2-click | `Line` | v0.2 |
 | `pixpick.perspective()` | 4-corner click | `Perspective` | v0.2 |
 | `pixpick.multi_polygon()` | multiple polygons | `list[Polygon]` | v0.3 |

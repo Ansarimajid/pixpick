@@ -9,6 +9,7 @@ pixpick/
 ├── selectors/
 │   ├── box.py            # BoxSelector
 │   └── polygon.py        # PolygonSelector
+│   └── line.py           # LineSelector
 ├── backends/
 │   ├── base.py           # AbstractBackend — contract for all backends
 │   └── cv2_backend.py    # CV2Backend (OpenCV window)
@@ -56,9 +57,9 @@ A backend handles the UI — opening a window, capturing mouse input, and return
 
 | Backend | Class | Environment | Status |
 |---|---|---|---|
-| OpenCV window | `CV2Backend` | Local scripts | ✅ v0.1 |
-| Matplotlib | `NotebookBackend` | Jupyter / Colab | 🔜 v0.2 |
-| Gradio | `GradioBackend` | Headless / SSH | 🔜 v0.2 |
+| OpenCV window | `CV2Backend` | Local scripts | ✅ v0.1.0 |
+| Matplotlib | `NotebookBackend` | Jupyter / Colab | 🔜 v0.2.0 |
+| Gradio | `GradioBackend` | Headless / SSH | 🔜 v0.2.0 |
 
 ## CV2Backend (default)
 
@@ -119,6 +120,15 @@ class MyBackend(BaseBackend):
     ) -> list[tuple[int, int]] | None:
         # open your UI, capture clicks
         # return [(x0,y0), (x1,y1), ...] or None if cancelled
+        ...
+
+    def select_line(
+        self,
+        image: np.ndarray,
+        title: str = "pixpick",
+    ) -> tuple[tuple[int, int], tuple[int, int]] | None:
+        # open your UI, capture clicks
+        # return ((x0,y0), (x1,y1)) or None if cancelled
         ...
 ```
 
