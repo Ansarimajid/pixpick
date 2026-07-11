@@ -120,6 +120,8 @@ def load(path: str) -> Box | Multibox | Polygon | Line:
         return Multibox.load(path)
     elif sel_type == "polygon":
         return Polygon.load(path)
+    elif sel_type == "line":
+        return Line.load(path)
     else:
         raise ValueError(f"Unknown selection type in JSON: '{sel_type}'")
 

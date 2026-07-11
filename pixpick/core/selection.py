@@ -622,11 +622,6 @@ class Line:
         return (x1 + x2) // 2, (y1 + y2) // 2
 
     @property
-    def points(self) -> list[tuple[int, int]]:
-        """Return the points as a list of tuples."""
-        return self.points
-
-    @property
     def length(self) -> float:
         """Length of the line in pixels."""
         x1, y1 = self.points[0]
@@ -646,3 +641,51 @@ class Line:
             "center":            self.center,
             "length":            self.length,
         }
+
+    # ------------------------------------------------------------------ #
+    # Persistence                                                          #
+    # ------------------------------------------------------------------ #
+
+    def save(self, path: str | Path) -> None:
+        """Serialise to JSON."""
+        data = {
+            "type": "line",
+            "image_size": [self.image_width, self.image_height],
+            "coordinates": {
+                "points":     self.points,
+                "normalized": self.norm,
+            },
+        }
+        Path(path).write_text(json.dumps(data, indent=2))
+
+    @classmethod
+    def load(cls, path: str | Path) -> "Line":
+        """Reconstruct from a saved JSON file."""
+        data = json.loads(Path(path).read_text())
+        if data["type"] != "line":
+            raise ValueError(f"Expected type 'line', got '{data['type']}'")
+        w, h = data["image_size"]
+        points = [tuple(p) for p in data["coordinates"]["points"]]
+        return cls(points=points, image_width=w, image_height=h)
+
+    # ------------------------------------------------------------------ #
+    # Visualisation                                                        #
+    # ------------------------------------------------------------------ #
+
+    def visualize(
+        self,
+        image: np.ndarray,
+        color: tuple = (0, 255, 0),
+        thickness: int = 2,
+    ) -> np.ndarray:
+        """Draw the line on a copy of image."""
+        canvas = image.copy()
+        pts = self.as_numpy.reshape((-1, 1, 2))
+        cv2.polylines(canvas, [pts], isClosed=False, color=color, thickness=thickness)
+        for i, (x, y) in enumerate(self.points):
+            cv2.circle(canvas, (x, y), 4, color, -1)
+            cv2.putText(
+                canvas, str(i), (x + 5, y - 5),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1, cv2.LINE_AA,
+            )
+        return canvas
