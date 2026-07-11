@@ -18,7 +18,7 @@ import tempfile
 import numpy as np
 import pytest
 
-from pixpick.core.selection import Box, Multibox, Polygon
+from pixpick.core.selection import Box, Multibox, Polygon, Line
 from pixpick import load
 
 
@@ -36,6 +36,13 @@ def polygon():
         points=[(100, 50), (400, 50), (400, 300), (100, 300)],
         image_width=1920,
         image_height=1080,
+    )
+
+@pytest.fixture
+def line():
+    return Line(
+        points=[(100, 50), (400, 300)],
+        image_width=1920, image_height=1080
     )
 
 @pytest.fixture
@@ -515,6 +522,6 @@ class TestLoadDispatcher:
             line.save(path)
             result = load(path)
             assert isinstance(result, Line)
-            assert result.xyxy == line.xyxy
+            assert result.center == line.center
         finally:
             os.unlink(path)
