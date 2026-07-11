@@ -600,3 +600,36 @@ class Line:
     def as_numpy(self) -> np.ndarray:
         """Shape (2, 2) int32 array — [[x1,y1], [x2,y2]]."""
         return np.array(self.points, dtype=np.int32)
+
+    @property
+    def norm(self) -> list[tuple[float, float]]:
+        """Points normalised to [0, 1]."""
+        return [
+            (x / self.image_width, y / self.image_height)
+            for x, y in self.points
+        ]
+
+    @property
+    def norm_numpy(self) -> np.ndarray:
+        """Shape (2, 2) float32 array of normalised points."""
+        return np.array(self.norm, dtype=np.float32)
+
+    @property
+    def center(self) -> tuple[int, int]:
+        """(cx, cy) in absolute pixels."""
+        x1, y1 = self.points[0]
+        x2, y2 = self.points[1]
+        return (x1 + x2) // 2, (y1 + y2) // 2
+
+    @property
+    def points(self) -> list[tuple[int, int]]:
+        """Return the points as a list of tuples."""
+        return self.points
+
+    @property
+    def length(self) -> float:
+        """Length of the line in pixels."""
+        x1, y1 = self.points[0]
+        x2, y2 = self.points[1]
+        return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+
