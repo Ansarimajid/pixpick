@@ -4,7 +4,7 @@ Save selections to JSON and reload them. Useful when you pick a zone once and re
 
 ## Save
 
-Both `Box` and `Polygon` have a `.save()` method.
+`Box` `Polygon` and `Line` have a `.save()` method.
 
 ```python
 region = pixpick.box("frame.jpg")
@@ -12,6 +12,9 @@ region.save("selections/entry_zone.json")
 
 zone = pixpick.polygon("frame.jpg")
 zone.save("selections/count_zone.json")
+
+line = pixpick.line("frame.jpg")
+line.save("selections/line_zone.json")
 ```
 
 ## Load
@@ -26,10 +29,11 @@ selection = pixpick.load("selections/entry_zone.json")
 If you know the type, you can load directly from the class:
 
 ```python
-from pixpick.core.selection import Box, Polygon
+from pixpick.core.selection import Box, Polygon, Line
 
 region = Box.load("entry_zone.json")
 zone   = Polygon.load("count_zone.json")
+line   = Line.load("line_zone.json")
 ```
 
 ## JSON schema
@@ -92,6 +96,4 @@ else:
     zone.save(ZONE_FILE)
     print("Zone saved.")
 
-# rest of the pipeline uses zone as normal
-polygon_zone = sv.PolygonZone(**zone.to_supervision())
 ```
