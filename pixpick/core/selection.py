@@ -476,7 +476,7 @@ class Polygon:
 
         Usage
         -----
-        zone = sv.PolygonZone(**polygon.to_supervision())
+        zone = sv.PolygonZone(**polygon.supervision())
         """
         return {"polygon": self.as_numpy}
 

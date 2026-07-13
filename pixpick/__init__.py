@@ -15,7 +15,7 @@ Quick start
 
     # Polygon
     zone = pixpick.polygon("frame.jpg")
-    sv.PolygonZone(**zone.to_supervision())
+    sv.PolygonZone(**zone.supervision())
     print(zone.points)          # [(x0,y0), (x1,y1), ...]
 
     # Save and reload either type

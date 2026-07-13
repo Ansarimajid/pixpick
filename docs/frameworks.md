@@ -29,7 +29,7 @@ results = model.predict(visual_prompts=visual_prompts)
 ---
 
 
-## SAM / SAM2
+## SAM / SAM2 / SAM3
 
 **Box prompt**
 
@@ -49,7 +49,7 @@ When you need a specific format that isn't covered by a named method:
 
 ```python
 region = pixpick.box("image.jpg")
-raw = region.to_raw()
+raw = region.raw()
 
 raw["xyxy"]             # [x1, y1, x2, y2]       absolute pixels
 raw["xywh"]             # [x, y, w, h]            absolute pixels
