@@ -5,7 +5,7 @@
 ```
 pixpick/
 ├── core/
-│   └── selection.py      # Box, Multibox, Polygon — all properties and to_*() methods
+│   └── selection.py      # Box, Multibox, Polygon — all properties and methods
 ├── selectors/
 │   ├── box.py            # BoxSelector
 │   └── polygon.py        # PolygonSelector

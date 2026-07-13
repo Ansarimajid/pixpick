@@ -5,13 +5,13 @@
 - Box selector, cv2 backend
 - Polygon selector, cv2 backend
 - Line selector, cv2 backend
-- YOLO, SAM2, Supervision framework methods
+- YOLO, SAM2 / SAM3, Supervision framework methods
 - JSON persistence
 - `pixpick.box()`, `pixpick.polygon()`, `pixpick.line()`, `pixpick.load()`
 
 ## v0.2 — More selectors + environments
 
-- `Points` selector — click foreground/background points for SAM2
+- `Points` selector — click foreground/background points for SAM2 / SAM3
 - `Perspective` selector — 4-corner pick for BEV `sv.ViewTransformer`
 - `NotebookBackend` — Matplotlib-based, works in Jupyter and Colab
 - `GradioBackend` — works on headless servers and SSH sessions
