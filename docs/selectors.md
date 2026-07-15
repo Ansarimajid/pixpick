@@ -61,6 +61,7 @@ region.xyxy         # [[x1, y1, x2, y2], ...]
 region.as_numpy     # np.array shape (N, 4)
 ```
 
+properties and methods are the same for `Box` and `Multibox`, except that `Multibox` has a `boxes` property.
 ---
 
 ## Polygon
@@ -88,6 +89,7 @@ zone.image_height       # int
 
 ### Framework methods
 
+```python
 zone.yolo_region()
 zone.raw()           # all formats in one dict
 ```
