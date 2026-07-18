@@ -1,6 +1,4 @@
-<div align="center">
-
-# pixpick 🎯
+# PixPick
 
 **Interactive coordinate picker for Computer Vision — no external tools needed.**
 
@@ -11,7 +9,7 @@
 
 </div>
 
-![Project Overview](https://github.com/K-saif/pixpick/blob/main/docs/pixpick_main.png)
+![Project Overview](./pixpick_main.png)
 
 ---
 ## The problem
