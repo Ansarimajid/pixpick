@@ -1,6 +1,6 @@
 site_name: PixPick
 site_description: Interactive Coordinate Picker for Computer Vision
-site_url: https://your-domain.com
+site_url: https://k-saif.github.io/pixpick/
 
 theme:
   name: material
