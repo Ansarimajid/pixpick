@@ -1,6 +1,9 @@
 # PixPick
 
-**Interactive coordinate picker for Computer Vision — no external tools needed.**
+**Interactive coordinate picker for Computer Vision.**
+
+Draw boxes, polygons and lines on images or videos and instantly get coordinates for YOLO, SAM, YOLOE, OpenCV, and your own pipelines.
+
 
 ![Project Overview](./pixpick_main.png)
 
